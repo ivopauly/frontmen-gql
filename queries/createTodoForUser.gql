@@ -1,0 +1,9 @@
+mutation CreateTodoForUser($input: NewTodoInput!) {
+  newTodo(input: $input) {
+    name
+    done
+    user {
+      username
+    }
+  }
+}

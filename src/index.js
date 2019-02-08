@@ -1,6 +1,7 @@
 import { ApolloServer } from 'apollo-server'
 import gql from 'graphql-tag'
 import { AuthenticationDirective } from './auth.js'
+import fetch from 'node-fetch'
 
 const wait = async time => new Promise(resolve => setTimeout(resolve, time))
 
@@ -32,9 +33,22 @@ const typeDefs = gql`
     secret: String @auth
   }
 
+  type Pokemon {
+    name: String
+    url: String
+  }
+
+  type PokemonCall {
+    count: String
+    next: String
+    previous: String
+    results: [Pokemon]
+  }
+
   type Query {
     oneTodo: Todo!
     todos: [Todo!]!
+    pokemons: PokemonCall
   }
 
   input NewTodoInput {
@@ -77,6 +91,12 @@ const resolvers = {
     },
     todos(root, args, context) {
       return db.todos.find({}).then(results => results.data)
+    },
+    async pokemons() {
+      const pokemons = await fetch('https://pokeapi.co/api/v2/pokemon/').then(
+        r => r.json()
+      )
+      return pokemons
     }
   },
   Mutation: {

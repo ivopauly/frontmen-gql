@@ -2,6 +2,11 @@ import { ApolloServer } from 'apollo-server'
 import gql from 'graphql-tag'
 
 const typeDefs = gql`
+  enum TodoType {
+    checklist
+    reminder
+  }
+
   type User {
     id: ID
     username: String
@@ -10,10 +15,12 @@ const typeDefs = gql`
   type Todo {
     name: String
     done: Boolean
+    type: TodoType
   }
 
   type Query {
-    oneTodo: Todo
+    oneTodo: Todo!
+    todos: [Todo!]!
   }
 
   type Mutation {
@@ -23,7 +30,8 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    oneTodo() {}
+    oneTodo() {},
+    todos() {}
   },
   Mutation: {
     newTodo() {}

@@ -34,13 +34,16 @@ const resolvers = {
     todos() {}
   },
   Mutation: {
-    newTodo() {}
+    newTodo(rootValue, args, context, info) {}
   }
 }
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  context([ req ]) {
+    return {}
+  }
 })
 
 server

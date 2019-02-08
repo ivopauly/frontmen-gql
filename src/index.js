@@ -23,8 +23,14 @@ const typeDefs = gql`
     todos: [Todo!]!
   }
 
+  input NewTodoInput {
+    name: String!
+    done: Boolean = false
+    type: TodoType!
+  }
+
   type Mutation {
-    newTodo(name: String!, type: TodoType!): Todo
+    newTodo(input: NewTodoInput!): Todo
   }
 `
 

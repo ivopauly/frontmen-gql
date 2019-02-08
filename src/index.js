@@ -10,6 +10,7 @@ const typeDefs = gql`
   type User {
     id: ID
     username: String
+    friends(limit: Int = 5): [User]
   }
 
   type Todo {

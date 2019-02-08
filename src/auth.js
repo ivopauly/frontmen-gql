@@ -1,7 +1,7 @@
 import { SchemaDirectiveVisitor, AuthenticationError } from 'apollo-server'
 import { defaultFieldResolver } from 'graphql'
 
-export class Auth extends SchemaDirectiveVisitor {
+export class AuthenticationDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field) {
     const resolve = field.resolve || defaultFieldResolver
 
@@ -9,6 +9,7 @@ export class Auth extends SchemaDirectiveVisitor {
       if (!ctx.isAuth) {
         throw new AuthenticationError('not auth homie!')
       }
+      return resolve.call(this, rv, args, ctx, info)
     }
   }
 }

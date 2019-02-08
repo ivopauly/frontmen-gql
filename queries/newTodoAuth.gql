@@ -1,0 +1,25 @@
+# GraphQL mutation
+mutation CreateTodoForUser($input: NewTodoInput!) {
+  newTodo(input: $input) {
+    name
+    done
+    user {
+      username
+    }
+  }
+}
+
+# Query variables
+# {
+#   "input": {
+#     "name": "clean room",
+#     "type": "reminder",
+#     "user": "1"
+#   }
+# }
+
+# HTTP headers
+# {
+#   "userId": "somestrangestuff",
+#   "token": "abracadabra"
+# }

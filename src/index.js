@@ -1,10 +1,17 @@
 import { ApolloServer } from 'apollo-server'
 import gql from 'graphql-tag'
+import { AuthenticationDirective } from './auth.js'
 
 const wait = async time => new Promise(resolve => setTimeout(resolve, time))
 
 const typeDefs = gql`
-  directive @auth on FIELD_DEFINITION
+  enum ROLES {
+    admin
+    editor
+    guest
+  }
+
+  directive @auth(role: String) on FIELD_DEFINITION
 
   enum TodoType {
     checklist
@@ -38,7 +45,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    newTodo(input: NewTodoInput!): Todo
+    newTodo(input: NewTodoInput!): Todo @auth
+    editTodo(input: NewTodoInput!): Todo
   }
 `
 
@@ -75,6 +83,10 @@ const resolvers = {
     newTodo(rootValue, { input }, context, info) {
       db.todos.push(input)
       return input
+    },
+    editTodo(rootValue, { input }, context, info) {
+      db.todos.push(input)
+      return input
     }
   },
   Todo: {
@@ -90,7 +102,14 @@ const resolvers = {
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  context: ({ req }) => ({
+    userId: req.headers.userId,
+    isAuth: !!req.headers.token
+  }),
+  schemaDirectives: {
+    auth: AuthenticationDirective
+  }
 })
 
 server

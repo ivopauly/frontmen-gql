@@ -24,7 +24,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    newTodo: Todo
+    newTodo(name: String!, type: TodoType!): Todo
   }
 `
 
@@ -34,6 +34,7 @@ const resolvers = {
     todos() {}
   },
   Mutation: {
+    // newTodo(rootValue, args, context, info) {}
     newTodo(rootValue, args, context, info) {}
   }
 }

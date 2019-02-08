@@ -1,0 +1,7 @@
+# Write your query or mutation here
+mutation {
+  newTodo(input: { name: "clean", type: reminder } ) {
+    name
+    done
+  }
+}

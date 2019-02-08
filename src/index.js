@@ -36,7 +36,23 @@ const typeDefs = gql`
 `
 
 const db = {
-  todos: []
+  todos: [
+    {
+      name: 'cleaning',
+      done: false,
+      type: 'reminder'
+    },
+    {
+      name: 'walk with the dog',
+      done: false,
+      type: 'reminder'
+    },
+    {
+      name: '4 apples',
+      done: false,
+      type: 'checklist'
+    },
+  ]
 }
 
 const resolvers = {
@@ -44,7 +60,9 @@ const resolvers = {
     oneTodo() {
       return db.todos[0]
     },
-    todos() {}
+    todos(root, args, context) {
+      return db.todos.find({}).then(results => results.data)
+    }
   },
   Mutation: {
     newTodo(rootValue, { input }, context, info) {

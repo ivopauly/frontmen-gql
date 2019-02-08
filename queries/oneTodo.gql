@@ -1,0 +1,30 @@
+{
+  oneTodo {
+    name
+    done
+    type
+  }
+}
+
+# multiple todos
+{
+  oneTodo {
+    name
+    done
+    type
+  }
+  antoherTodo: oneTodo {
+    name
+    done
+    type
+  }
+}
+
+# all todos
+{
+  todos {
+    name
+    done
+    type
+  }
+}

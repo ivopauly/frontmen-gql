@@ -1,4 +1,4 @@
-import { ApolloServer, UserInputError } from 'apollo-server'
+import { ApolloServer } from 'apollo-server'
 import gql from 'graphql-tag'
 
 const typeDefs = gql`
@@ -10,10 +10,11 @@ const typeDefs = gql`
   type User {
     id: ID
     username: String
-    friends: [User]
+    todos: [Todo]
   }
 
   type Todo {
+    user: User!
     name: String
     done: Boolean
     type: TodoType
@@ -28,6 +29,7 @@ const typeDefs = gql`
     name: String!
     done: Boolean = false
     type: TodoType!
+    user: ID
   }
 
   type Mutation {
@@ -51,7 +53,7 @@ const db = {
       name: '4 apples',
       done: false,
       type: 'checklist'
-    },
+    }
   ]
 }
 
@@ -68,6 +70,14 @@ const resolvers = {
     newTodo(rootValue, { input }, context, info) {
       db.todos.push(input)
       return input
+    }
+  },
+  Todo: {
+    user(todo) {
+      return {
+        id: todo.user,
+        username: 'John Doe'
+      }
     }
   }
 }

@@ -7,3 +7,12 @@ mutation CreateTodoForUser($input: NewTodoInput!) {
     }
   }
 }
+
+# query params
+# {
+#   "input": {
+#     "name": "clean room",
+#     "type": "reminder",
+#     "user": "1"
+#   }
+# }

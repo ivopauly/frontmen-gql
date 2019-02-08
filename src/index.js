@@ -1,6 +1,8 @@
 import { ApolloServer } from 'apollo-server'
 import gql from 'graphql-tag'
 
+const wait = async time => new Promise(resolve => setTimeout(resolve, time))
+
 const typeDefs = gql`
   enum TodoType {
     checklist
@@ -73,7 +75,9 @@ const resolvers = {
     }
   },
   Todo: {
-    user(todo) {
+    async user(todo) {
+      await wait(200)
+      console.log('test me')
       return {
         id: todo.user,
         username: 'John Doe'

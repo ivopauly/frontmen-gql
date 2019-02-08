@@ -1,4 +1,4 @@
-import { ApolloServer } from 'apollo-server'
+import { ApolloServer, UserInputError } from 'apollo-server'
 import gql from 'graphql-tag'
 
 const typeDefs = gql`
@@ -10,7 +10,7 @@ const typeDefs = gql`
   type User {
     id: ID
     username: String
-    friends(limit: Int = 5): [User]
+    friends: [User]
   }
 
   type Todo {
@@ -35,23 +35,28 @@ const typeDefs = gql`
   }
 `
 
+const db = {
+  todos: []
+}
+
 const resolvers = {
   Query: {
-    oneTodo() {},
+    oneTodo() {
+      return db.todos[0]
+    },
     todos() {}
   },
   Mutation: {
-    // newTodo(rootValue, args, context, info) {}
-    newTodo(rootValue, args, context, info) {}
+    newTodo(rootValue, { input }, context, info) {
+      db.todos.push(input)
+      return input
+    }
   }
 }
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
-  context([ req ]) {
-    return {}
-  }
+  resolvers
 })
 
 server

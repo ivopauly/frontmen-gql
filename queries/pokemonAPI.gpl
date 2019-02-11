@@ -1,0 +1,11 @@
+{
+  pokemons {
+    count
+    next
+    previous
+    results {
+      name
+      url
+    }
+  }
+}
